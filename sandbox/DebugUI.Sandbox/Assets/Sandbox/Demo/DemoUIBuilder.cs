@@ -1,3 +1,4 @@
+using Unity.Scripting.LifecycleManagement;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -5,8 +6,9 @@ using UnityEngine.SceneManagement;
 
 namespace DebugUI.Sandbox
 {
-    public class DemoUIBuilder : DebugUIBuilderBase
+    public partial class DemoUIBuilder : DebugUIBuilderBase
     {
+        [AutoStaticsCleanup]
         static DemoUIBuilder instance;
 
         [SerializeField] GameObject prefab;
@@ -28,7 +30,7 @@ namespace DebugUI.Sandbox
             }
         }
 
-        protected override void Awake()
+        private void Awake()
         {
             if (instance != null)
             {
@@ -41,8 +43,6 @@ namespace DebugUI.Sandbox
 
             volume.profile.TryGet(out colorAdjustments);
             volume.profile.TryGet(out bloom);
-
-            base.Awake();
         }
 
         protected override void Configure(IDebugUIBuilder builder)
