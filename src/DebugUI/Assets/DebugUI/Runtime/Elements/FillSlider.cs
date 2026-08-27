@@ -3,10 +3,9 @@ using UnityEngine.UIElements;
 
 namespace DebugUI.UIElements
 {
-    public class FillSlider : Slider
+    [UxmlElement]
+    public partial class FillSlider : Slider
     {
-        public sealed new class UxmlFactory : UxmlFactory<FillSlider, UxmlTraits> { }
-
         readonly VisualElement filler;
         readonly Label valueLabel;
 
@@ -45,10 +44,9 @@ namespace DebugUI.UIElements
         }
     }
 
-    public class FillSliderInt : SliderInt
+    [UxmlElement]
+    public partial class FillSliderInt : SliderInt
     {
-        public sealed new class UxmlFactory : UxmlFactory<FillSliderInt, UxmlTraits> { }
-
         readonly VisualElement filler;
         readonly Label valueLabel;
 

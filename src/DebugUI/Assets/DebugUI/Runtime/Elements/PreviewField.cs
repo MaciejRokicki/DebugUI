@@ -2,24 +2,9 @@ using UnityEngine.UIElements;
 
 namespace DebugUI.UIElements
 {
-    public class PreviewField : VisualElement
+    [UxmlElement]
+    public partial class PreviewField : VisualElement
     {
-        public sealed new class UxmlFactory : UxmlFactory<PreviewField, UxmlTraits> { }
-
-        public sealed new class UxmlTraits : BindableElement.UxmlTraits
-        {
-            readonly UxmlStringAttributeDescription text = new() { name = "text", defaultValue = "Image" };
-
-            public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
-            {
-                base.Init(ve, bag, cc);
-                if (ve is PreviewField preview)
-                {
-                    preview.Text = text.GetValueFromBag(bag, cc);
-                }
-            }
-        }
-
         public PreviewField()
         {
             label = new Label();

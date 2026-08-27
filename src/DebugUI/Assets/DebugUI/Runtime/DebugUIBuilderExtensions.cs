@@ -514,9 +514,9 @@ namespace DebugUI
             return builder;
         }
 
-        public static void BuildWith(this IDebugUIBuilder builder, UIDocument uiDocument)
+        public static void BuildWith(this IDebugUIBuilder builder, VisualElement root)
         {
-            uiDocument.rootVisualElement.Add(builder.Build());
+            root.Add(builder.Build());
         }
     }
 }

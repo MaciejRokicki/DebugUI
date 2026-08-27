@@ -1,10 +1,11 @@
+using Unity.Scripting.LifecycleManagement;
 using UnityEngine;
 
 namespace DebugUI
 {
     [AddComponentMenu("")]
     [DisallowMultipleComponent]
-    internal sealed class UpdateDispatcher : MonoBehaviour
+    internal sealed partial class UpdateDispatcher : MonoBehaviour
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Init()
@@ -13,6 +14,7 @@ namespace DebugUI
             DontDestroyOnLoad(instance);
         }
 
+        [AutoStaticsCleanup]
         static UpdateDispatcher instance;
 
         readonly UpdateRunner updateRunner = new(ex => Debug.LogException(ex));

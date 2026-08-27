@@ -1,35 +1,17 @@
-using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace DebugUI.UIElements
 {
-    [Serializable]
-    public class DebugWindow : VisualElement
+    [UxmlElement]
+    public partial class DebugWindow : VisualElement
     {
-        public sealed new class UxmlFactory : UxmlFactory<DebugWindow, UxmlTraits> { }
-
-        public sealed new class UxmlTraits : BindableElement.UxmlTraits
-        {
-            readonly UxmlStringAttributeDescription text = new() { name = "text", defaultValue = "Debug" };
-            readonly UxmlBoolAttributeDescription value = new() { name = "value", defaultValue = true };
-
-            public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
-            {
-                base.Init(ve, bag, cc);
-                if (ve is DebugWindow window)
-                {
-                    window.Text = text.GetValueFromBag(bag, cc);
-                    window.SetValueWithoutNotify(value.GetValueFromBag(bag, cc));
-                }
-            }
-        }
-
         public override VisualElement contentContainer => scrollView.contentContainer;
 
-        [SerializeField] string text = "Debug";
-        [SerializeField] bool value;
+        string text = "Debug";
+        bool value;
 
+        [UxmlAttribute]
         public bool Value
         {
             get => value;
@@ -44,6 +26,7 @@ namespace DebugUI.UIElements
             }
         }
 
+        [UxmlAttribute]
         public string Text
         {
             get => text;
@@ -63,7 +46,7 @@ namespace DebugUI.UIElements
         public void SetDraggable(bool draggable)
         {
             if (dragManipulator != null) this.RemoveManipulator(dragManipulator);
-            if (draggable) 
+            if (draggable)
             {
                 var toggle = foldout.Q<Toggle>();
                 dragManipulator = new DebugWindowDragManipulator(this, toggle, toggle);
@@ -76,7 +59,7 @@ namespace DebugUI.UIElements
         readonly Foldout foldout;
         readonly ScrollView scrollView;
         readonly VisualElement background;
-        
+
         DebugWindowDragManipulator dragManipulator;
 
         public DebugWindow()
@@ -127,9 +110,9 @@ namespace DebugUI.UIElements
             var toggle = foldout.Q<Toggle>();
             schedule.Execute(() =>
             {
-                transform.position = new Vector2(
-                    Mathf.Clamp(transform.position.x, parent.contentRect.xMin, parent.contentRect.xMax - toggle.contentRect.width),
-                    Mathf.Clamp(transform.position.y, parent.contentRect.yMin, parent.contentRect.yMax - toggle.contentRect.height)
+                style.translate = new Translate(
+                    Mathf.Clamp(resolvedStyle.translate.x, parent.contentRect.xMin, parent.contentRect.xMax - toggle.contentRect.width),
+                    Mathf.Clamp(resolvedStyle.translate.y, parent.contentRect.yMin, parent.contentRect.yMax - toggle.contentRect.height)
                 );
             })
             .Every(1);

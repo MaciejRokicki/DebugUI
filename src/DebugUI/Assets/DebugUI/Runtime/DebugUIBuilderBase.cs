@@ -5,11 +5,21 @@ namespace DebugUI
 {
     public abstract class DebugUIBuilderBase : MonoBehaviour
     {
-        [SerializeField] UIDocument uiDocument;
+        [SerializeField] PanelRenderer panelRenderer;
 
         protected abstract void Configure(IDebugUIBuilder builder);
 
-        protected virtual void Awake()
+        protected virtual void OnEnable()
+        {
+            panelRenderer.RegisterUIReloadCallback(OnUIReload);
+        }
+
+        protected virtual void OnDisable()
+        {
+            panelRenderer.UnregisterUIReloadCallback(OnUIReload);
+        }
+
+        protected virtual void OnUIReload(PanelRenderer renderer, VisualElement rootElement, int version)
         {
             var builder = new DebugUIBuilder();
             builder.ConfigureWindowOptions(options =>
@@ -18,7 +28,7 @@ namespace DebugUI
             });
 
             Configure(builder);
-            builder.BuildWith(uiDocument);
+            builder.BuildWith(rootElement);
         }
     }
 }

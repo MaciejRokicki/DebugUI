@@ -37,7 +37,7 @@ namespace DebugUI
 
         void PointerDownHandler(PointerDownEvent e)
         {
-            targetStartPosition = moveTarget.transform.position;
+            targetStartPosition = moveTarget.resolvedStyle.translate;
             pointerStartPosition = e.position;
             target.CapturePointer(e.pointerId);
             enabled = true;
@@ -48,7 +48,7 @@ namespace DebugUI
             if (enabled && target.HasPointerCapture(e.pointerId))
             {
                 var pointerDelta = e.position - pointerStartPosition;
-                moveTarget.transform.position = new Vector2(
+                moveTarget.style.translate = new Translate(
                     Mathf.Clamp(targetStartPosition.x + pointerDelta.x, moveTarget.parent.contentRect.xMin, moveTarget.parent.contentRect.xMax - rectTarget.contentRect.width),
                     Mathf.Clamp(targetStartPosition.y + pointerDelta.y, moveTarget.parent.contentRect.yMin, moveTarget.parent.contentRect.yMax - rectTarget.contentRect.height)
                 );
