@@ -1,9 +1,8 @@
+using DebugUI.UIElements;
 using System;
 using System.Collections.Generic;
-using UnityEngine.UIElements;
-
 using System.Linq;
-using DebugUI.UIElements;
+using UnityEngine.UIElements;
 
 namespace DebugUI
 {

@@ -9,22 +9,6 @@ namespace DebugUI.UIElements
         public override VisualElement contentContainer => scrollView.contentContainer;
 
         string text = "Debug";
-        bool value;
-
-        [UxmlAttribute]
-        public bool Value
-        {
-            get => value;
-            set
-            {
-                if (this.value == value) return;
-
-                using var evt = ChangeEvent<bool>.GetPooled(this.value, value);
-                evt.target = this;
-                SetValueWithoutNotify(value);
-                SendEvent(evt);
-            }
-        }
 
         [UxmlAttribute]
         public string Text
@@ -33,14 +17,8 @@ namespace DebugUI.UIElements
             set
             {
                 this.text = value;
-                foldout.text = value;
+                label.text = value;
             }
-        }
-
-        public void SetValueWithoutNotify(bool newValue)
-        {
-            value = newValue;
-            foldout.value = value;
         }
 
         public void SetDraggable(bool draggable)
@@ -48,15 +26,14 @@ namespace DebugUI.UIElements
             if (dragManipulator != null) this.RemoveManipulator(dragManipulator);
             if (draggable)
             {
-                var toggle = foldout.Q<Toggle>();
-                dragManipulator = new DebugWindowDragManipulator(this, toggle, toggle);
-                toggle.AddManipulator(dragManipulator);
+                dragManipulator = new DebugWindowDragManipulator(this, label);
+                label.AddManipulator(dragManipulator);
             }
         }
 
         public VisualElement BackgroundElement => background;
 
-        readonly Foldout foldout;
+        readonly Label label;
         readonly ScrollView scrollView;
         readonly VisualElement background;
 
@@ -70,21 +47,9 @@ namespace DebugUI.UIElements
             background.AddToClassList(UssClasses.debug_ui_window_background);
             hierarchy.Add(background);
 
-            foldout = new Foldout()
-            {
-                value = value,
-                text = text
-            };
-            foldout.RegisterValueChangedCallback((evt) =>
-            {
-                if (evt.currentTarget == evt.target)
-                {
-                    Value = foldout.value;
-                    evt.StopPropagation();
-                }
-            });
+            label = new Label(text);
 
-            background.Add(foldout);
+            background.Add(label);
 
             scrollView = new(ScrollViewMode.VerticalAndHorizontal);
 
@@ -105,14 +70,13 @@ namespace DebugUI.UIElements
 
             scrollView.contentViewport.style.flexGrow = 0f;
 
-            foldout.Add(scrollView);
+            background.Add(scrollView);
 
-            var toggle = foldout.Q<Toggle>();
             schedule.Execute(() =>
             {
                 style.translate = new Translate(
-                    Mathf.Clamp(resolvedStyle.translate.x, parent.contentRect.xMin, parent.contentRect.xMax - toggle.contentRect.width),
-                    Mathf.Clamp(resolvedStyle.translate.y, parent.contentRect.yMin, parent.contentRect.yMax - toggle.contentRect.height)
+                    Mathf.Clamp(resolvedStyle.translate.x, parent.contentRect.xMin, parent.contentRect.xMax - label.contentRect.width),
+                    Mathf.Clamp(resolvedStyle.translate.y, parent.contentRect.yMin, parent.contentRect.yMax - label.contentRect.height)
                 );
             })
             .Every(1);

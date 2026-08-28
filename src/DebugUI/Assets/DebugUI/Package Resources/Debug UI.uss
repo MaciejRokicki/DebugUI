@@ -389,6 +389,7 @@
     padding-left: 5px;
     padding-bottom: 3px;
     padding-top: 2px;
+    backdrop-filter: blur(10px);
 }
 
 .debug-ui-scroller-vertical {

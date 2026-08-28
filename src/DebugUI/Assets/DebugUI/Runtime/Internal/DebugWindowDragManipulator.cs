@@ -7,16 +7,14 @@ namespace DebugUI
     {
         readonly VisualElement moveTarget;
         readonly VisualElement rectTarget;
-        readonly Toggle toggle;
         Vector2 targetStartPosition;
         Vector3 pointerStartPosition;
         bool enabled;
 
-        public DebugWindowDragManipulator(VisualElement moveTarget, VisualElement rectTarget, Toggle toggle)
+        public DebugWindowDragManipulator(VisualElement moveTarget, VisualElement rectTarget)
         {
             this.moveTarget = moveTarget;
             this.rectTarget = rectTarget;
-            this.toggle = toggle;
         }
 
         protected override void RegisterCallbacksOnTarget()
@@ -52,7 +50,6 @@ namespace DebugUI
                     Mathf.Clamp(targetStartPosition.x + pointerDelta.x, moveTarget.parent.contentRect.xMin, moveTarget.parent.contentRect.xMax - rectTarget.contentRect.width),
                     Mathf.Clamp(targetStartPosition.y + pointerDelta.y, moveTarget.parent.contentRect.yMin, moveTarget.parent.contentRect.yMax - rectTarget.contentRect.height)
                 );
-                toggle.SetEnabled(false);
             }
         }
 
@@ -61,10 +58,6 @@ namespace DebugUI
             if (enabled && target.HasPointerCapture(e.pointerId))
             {
                 target.ReleasePointer(e.pointerId);
-                target.schedule.Execute(() =>
-                {
-                    toggle.SetEnabled(true);
-                });
             }
         }
 
