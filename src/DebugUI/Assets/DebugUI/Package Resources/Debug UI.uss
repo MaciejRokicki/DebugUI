@@ -421,3 +421,33 @@
     margin-bottom: 3px;
     margin-left: 3px;
 }
+
+.debug-tab {
+    color: black;
+}
+
+.debug-tab-view > * > * > .unity-tab__header {
+    background-color: rgb(100, 100, 250);
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.debug-tab-view > * > * > .unity-tab__header:hover {
+    background-color: rgb(209, 209, 209);
+}
+
+.debug-tab-view > * > * > .unity-tab__header:active {
+    background-color: rgb(149, 149, 149);
+}
+
+.debug-tab-view > * > * > .unity-tab__header:checked {
+    background-color: rgb(100, 0, 250);
+}
+
+.debug-tab-view > * > * > * > .unity-tab__header-label {
+    color: white;
+}
+
+.debug-tab-view > * > * > * > .unity-tab__header-underline {
+    display: none;
+}

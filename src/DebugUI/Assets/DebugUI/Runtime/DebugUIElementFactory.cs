@@ -1,8 +1,9 @@
+using DebugUI.UIElements;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
 using UnityEngine.UIElements;
-using DebugUI.UIElements;
 
 namespace DebugUI
 {
@@ -429,4 +430,100 @@ namespace DebugUI
         }
     }
 
+    internal sealed class DebugTabFactory : IDebugUIElementFactory
+    {
+        sealed class TabBuilder : IDebugUIBuilder
+        {
+            readonly VisualElement root;
+            readonly List<IDebugUIElementFactory> factories = new();
+            readonly List<IDebugUIOptions> options = new();
+
+            public ICollection<IDebugUIElementFactory> Factories => factories;
+            public ICollection<IDebugUIOptions> Options => options;
+
+            public TabBuilder(VisualElement root)
+            {
+                this.root = root;
+            }
+
+            public VisualElement Build()
+            {
+                List<IDisposable> disposables = new();
+                foreach (var factory in factories)
+                {
+                    root.Add(factory.CreateVisualElement(disposables));
+                }
+
+                root.RegisterCallback<DetachFromPanelEvent>(eventData =>
+                {
+                    foreach (var item in disposables) item.Dispose();
+                    disposables.Clear();
+                });
+
+                return root;
+            }
+        }
+
+        public string Label { get; set; }
+        public Action<IDebugUIBuilder> Configure { get; set; }
+
+        public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
+        {
+            var tab = new Tab(Label);
+            tab.AddToClassList("debug-tab");
+            var builder = new TabBuilder(tab);
+            Configure(builder);
+            tab.Add(builder.Build());
+
+            return tab;
+        }
+    }
+
+    internal sealed class DebugTabViewFactory : IDebugUIElementFactory
+    {
+        sealed class TabViewBuilder : IDebugUIBuilder
+        {
+            readonly VisualElement root;
+            readonly List<IDebugUIElementFactory> factories = new();
+            readonly List<IDebugUIOptions> options = new();
+
+            public ICollection<IDebugUIElementFactory> Factories => factories;
+            public ICollection<IDebugUIOptions> Options => options;
+
+            public TabViewBuilder(VisualElement root)
+            {
+                this.root = root;
+            }
+
+            public VisualElement Build()
+            {
+                List<IDisposable> disposables = new();
+                foreach (var factory in factories)
+                {
+                    root.Add(factory.CreateVisualElement(disposables));
+                }
+
+                root.RegisterCallback<DetachFromPanelEvent>(eventData =>
+                {
+                    foreach (var item in disposables) item.Dispose();
+                    disposables.Clear();
+                });
+
+                return root;
+            }
+        }
+
+        public Action<IDebugUIBuilder> Configure { get; set; }
+
+        public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
+        {
+            var tabView = new TabView();
+            tabView.AddToClassList("debug-tab-view");
+            var builder = new TabViewBuilder(tabView);
+            Configure(builder);
+            tabView.Add(builder.Build());
+
+            return tabView;
+        }
+    }
 }

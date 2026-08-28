@@ -514,6 +514,25 @@ namespace DebugUI
             return builder;
         }
 
+        public static IDebugUIBuilder AddTab(this IDebugUIBuilder builder, string label, Action<IDebugUIBuilder> configure)
+        {
+            builder.Factories.Add(new DebugTabFactory()
+            {
+                Label = label,
+                Configure = configure,
+            });
+            return builder;
+        }
+
+        public static IDebugUIBuilder AddTabView(this IDebugUIBuilder builder, Action<IDebugUIBuilder> configure)
+        {
+            builder.Factories.Add(new DebugTabViewFactory()
+            {
+                Configure = configure,
+            });
+            return builder;
+        }
+
         public static void BuildWith(this IDebugUIBuilder builder, VisualElement root)
         {
             root.Add(builder.Build());
