@@ -1,7 +1,7 @@
 using DebugUI.UIElements;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -524,6 +524,30 @@ namespace DebugUI
             tabView.Add(builder.Build());
 
             return tabView;
+        }
+    }
+
+    internal sealed class DebugListViewFactory : IDebugUIElementFactory
+    {
+        public string ElementName;
+        public float MaxHeight;
+        public IList Collection;
+        public Func<VisualElement> MakeItem;
+        public Action<VisualElement, int> BindItem;
+        public Action<VisualElement, int> UnbindItem;
+
+        public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
+        {
+            var listView = new ListView(Collection, -1, MakeItem, BindItem);
+            listView.unbindItem = UnbindItem;
+            listView.name = ElementName;
+            listView.virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight;
+            var styleLength = MaxHeight == -1.0f ? new StyleLength(StyleKeyword.Auto) : new StyleLength(MaxHeight);
+            listView.style.minHeight = styleLength;
+            listView.style.maxHeight = styleLength;
+            listView.focusable = false;
+            listView.selectionType = SelectionType.None;
+            return listView;
         }
     }
 }

@@ -7,6 +7,8 @@ namespace DebugUI
     {
         [SerializeField] PanelRenderer panelRenderer;
 
+        protected VisualElement root;
+
         protected abstract void Configure(IDebugUIBuilder builder);
 
         protected virtual void OnEnable()
@@ -21,6 +23,7 @@ namespace DebugUI
 
         protected virtual void OnUIReload(PanelRenderer renderer, VisualElement rootElement, int version)
         {
+            root = rootElement;
             var builder = new DebugUIBuilder();
             builder.ConfigureWindowOptions(options =>
             {

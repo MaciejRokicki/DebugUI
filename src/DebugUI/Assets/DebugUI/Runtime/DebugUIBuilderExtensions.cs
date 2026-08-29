@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -529,6 +530,33 @@ namespace DebugUI
             builder.Factories.Add(new DebugTabViewFactory()
             {
                 Configure = configure,
+            });
+            return builder;
+        }
+
+        public static IDebugUIBuilder AddListView(this IDebugUIBuilder builder, string elementName, IList collection, Func<VisualElement> makeItem, Action<VisualElement, int> bindItem)
+        {
+            builder.Factories.Add(new DebugListViewFactory()
+            {
+                ElementName = elementName,
+                MaxHeight = -1.0f,
+                Collection = collection,
+                MakeItem = makeItem,
+                BindItem = bindItem
+            });
+            return builder;
+        }
+
+        public static IDebugUIBuilder AddListView(this IDebugUIBuilder builder, string elementName, float maxHeight, IList collection, Func<VisualElement> makeItem, Action<VisualElement, int> bindItem, Action<VisualElement, int> unbindItem)
+        {
+            builder.Factories.Add(new DebugListViewFactory()
+            {
+                ElementName = elementName,
+                MaxHeight = maxHeight,
+                Collection = collection,
+                MakeItem = makeItem,
+                BindItem = bindItem,
+                UnbindItem = unbindItem
             });
             return builder;
         }
