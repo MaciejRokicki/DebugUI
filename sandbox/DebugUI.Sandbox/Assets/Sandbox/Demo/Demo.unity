@@ -12678,6 +12678,7 @@ MonoBehaviour:
       m_Action: Toggle
       m_Flags: 0
     m_Flags: 0
+  developmentBuildOnly: 1
   prefab: {fileID: 3521429977814404637, guid: a4abe1f22ae79479bb3b6fbd2d49833c, type: 3}
   volume: {fileID: 118777889}
   collection: []
