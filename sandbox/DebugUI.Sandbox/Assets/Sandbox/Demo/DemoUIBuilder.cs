@@ -41,16 +41,9 @@ namespace DebugUI.Sandbox
             }
         }
 
-        private void Awake()
+        protected override void Awake()
         {
-            if (instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            instance = this;
-            DontDestroyOnLoad(instance);
+            base.Awake();
 
             volume.profile.TryGet(out colorAdjustments);
             volume.profile.TryGet(out bloom);

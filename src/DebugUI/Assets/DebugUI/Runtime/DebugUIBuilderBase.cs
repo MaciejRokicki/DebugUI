@@ -8,11 +8,23 @@ namespace DebugUI
     {
         [SerializeField] PanelRenderer panelRenderer;
         [SerializeField] InputAction toggleAction;
+        [SerializeField] bool developmentBuildOnly;
 
         protected VisualElement root;
         protected VisualElement debugWindowVisualElement;
 
         protected abstract void Configure(IDebugUIBuilder builder);
+
+        protected virtual void Awake()
+        {
+            if (developmentBuildOnly)
+            {
+                if (!Debug.isDebugBuild)
+                {
+                    Destroy(gameObject);
+                }
+            }
+        }
 
         protected virtual void OnEnable()
         {
