@@ -17,6 +17,7 @@ namespace DebugUI
         public VisualElement Build()
         {
             var window = new DebugWindow();
+            window.name = "DebugWindow";
 
             List<IDisposable> disposables = new();
             foreach (var factory in factories)

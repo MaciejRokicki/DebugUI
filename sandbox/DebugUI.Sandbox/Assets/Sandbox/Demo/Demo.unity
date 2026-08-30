@@ -12661,6 +12661,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelRenderer: {fileID: 445198189}
+  toggleAction:
+    m_Name: Toggle
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: c9c7feea-32aa-45a2-a48a-c13498df7aa0
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 89329ba4-cb79-4248-a0d6-2c3981d55237
+      m_Path: <Keyboard>/home
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Toggle
+      m_Flags: 0
+    m_Flags: 0
   prefab: {fileID: 3521429977814404637, guid: a4abe1f22ae79479bb3b6fbd2d49833c, type: 3}
   volume: {fileID: 118777889}
   collection: []

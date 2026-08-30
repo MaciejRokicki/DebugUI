@@ -47,9 +47,36 @@ namespace DebugUI.UIElements
             background.AddToClassList(UssClasses.debug_ui_window_background);
             hierarchy.Add(background);
 
-            label = new Label(text);
+            var topbar = new VisualElement();
+            topbar.AddToClassList("debug-ui-topbar");
 
-            background.Add(label);
+            label = new Label(text);
+            label.style.flexGrow = 1;
+            topbar.Add(label);
+
+            var buttonContainer = new VisualElement();
+            buttonContainer.AddToClassList("debug-ui-topbar-button-container");
+
+            var toggleButton = new Button();
+            toggleButton.text = "-";
+            toggleButton.AddToClassList("debug-ui-topbar-button");
+            toggleButton.RegisterCallback<ClickEvent>((e) =>
+            {
+                scrollView.style.display = scrollView.style.display == DisplayStyle.None ? DisplayStyle.Flex : DisplayStyle.None;
+            });
+            buttonContainer.Add(toggleButton);
+
+            var closeButton = new Button();
+            closeButton.text = "x";
+            closeButton.AddToClassList("debug-ui-topbar-button");
+            closeButton.RegisterCallback<ClickEvent>((e) =>
+            {
+                style.display = DisplayStyle.None;
+            });
+            buttonContainer.Add(closeButton);
+
+            topbar.Add(buttonContainer);
+            background.Add(topbar);
 
             scrollView = new(ScrollViewMode.VerticalAndHorizontal);
 

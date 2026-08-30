@@ -470,7 +470,7 @@ namespace DebugUI
         public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
         {
             var tab = new Tab(Label);
-            tab.AddToClassList("debug-tab");
+            tab.AddToClassList("debug-ui-tab");
             var builder = new TabBuilder(tab);
             Configure(builder);
             tab.Add(builder.Build());
@@ -518,7 +518,7 @@ namespace DebugUI
         public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
         {
             var tabView = new TabView();
-            tabView.AddToClassList("debug-tab-view");
+            tabView.AddToClassList("debug-ui-tab-view");
             var builder = new TabViewBuilder(tabView);
             Configure(builder);
             tabView.Add(builder.Build());
