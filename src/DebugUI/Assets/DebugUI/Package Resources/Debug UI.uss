@@ -339,25 +339,6 @@
     background-color: rgb(86, 86, 115);
 }
 
-.debug-ui-topbar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    min-width: 200px;
-}
-
-.debug-ui-topbar-button-container {
-    display: flex;
-    flex-direction: row;
-}
-
-.debug-ui-topbar-button {
-    min-width: 20px;
-    width: 20px;
-    margin: 2px;
-}
-
 .debug-ui-slider__label {
     color: rgb(255, 255, 255);
     -unity-text-align: middle-right;
@@ -441,14 +422,42 @@
     margin-left: 3px;
 }
 
+.debug-ui-topbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 200px;
+}
+
+.debug-ui-topbar-button-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.debug-ui-topbar-button {
+    min-width: 20px;
+    width: 20px;
+    margin: 0px 0px 0px 2px;
+}
+
 .debug-ui-tab {
     color: black;
+}
+
+.debug-ui-tab-view > * > .unity-tab-view__header-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0px 5px 0px;
+    padding: 5px 0px 5px 5px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
 }
 
 .debug-ui-tab-view > * > * > .unity-tab__header {
     background-color: rgb(100, 100, 250);
     border-radius: 5px;
-    margin: 5px;
+    margin: 0px 5px 0px 0px;
 }
 
 .debug-ui-tab-view > * > * > .unity-tab__header:hover {

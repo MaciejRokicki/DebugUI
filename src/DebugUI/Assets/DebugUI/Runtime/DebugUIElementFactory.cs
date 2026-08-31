@@ -470,7 +470,7 @@ namespace DebugUI
         public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
         {
             var tab = new Tab(Label);
-            tab.AddToClassList("debug-ui-tab");
+            tab.AddToClassList(UssClasses.debug_ui_tab);
             var builder = new TabBuilder(tab);
             Configure(builder);
             tab.Add(builder.Build());
@@ -518,7 +518,7 @@ namespace DebugUI
         public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
         {
             var tabView = new TabView();
-            tabView.AddToClassList("debug-ui-tab-view");
+            tabView.AddToClassList(UssClasses.debug_ui_tab_view);
             var builder = new TabViewBuilder(tabView);
             Configure(builder);
             tabView.Add(builder.Build());
@@ -559,18 +559,18 @@ namespace DebugUI
         public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
         {
             var container = new VisualElement();
-            container.AddToClassList("debug-ui-submitable-field-container");
+            container.AddToClassList(UssClasses.debug_ui_submitable_field_container);
 
             var label = new Label(Label);
-            label.AddToClassList("debug-ui-submitable-field-label");
+            label.AddToClassList(UssClasses.debug_ui_submitable_field_label);
             container.Add(label);
 
             var intField = new IntegerField();
-            intField.AddToClassList("debug-ui-submitable-field");
+            intField.AddToClassList(UssClasses.debug_ui_submitable_field);
             container.Add(intField);
 
             var submitButton = new Button();
-            submitButton.AddToClassList("debug-ui-submitable-field-button");
+            submitButton.AddToClassList(UssClasses.debug_ui_submitable_field_button);
             submitButton.text = ">";
             container.Add(submitButton);
 
@@ -591,18 +591,18 @@ namespace DebugUI
         public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
         {
             var container = new VisualElement();
-            container.AddToClassList("debug-ui-submitable-field-container");
+            container.AddToClassList(UssClasses.debug_ui_submitable_field_container);
 
             var label = new Label(Label);
-            label.AddToClassList("debug-ui-submitable-field-label");
+            label.AddToClassList(UssClasses.debug_ui_submitable_field_label);
             container.Add(label);
 
             var floatField = new FloatField();
-            floatField.AddToClassList("debug-ui-submitable-field");
+            floatField.AddToClassList(UssClasses.debug_ui_submitable_field);
             container.Add(floatField);
 
             var submitButton = new Button();
-            submitButton.AddToClassList("debug-ui-submitable-field-button");
+            submitButton.AddToClassList(UssClasses.debug_ui_submitable_field_button);
             submitButton.text = ">";
             container.Add(submitButton);
 

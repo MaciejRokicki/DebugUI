@@ -48,18 +48,18 @@ namespace DebugUI.UIElements
             hierarchy.Add(background);
 
             var topbar = new VisualElement();
-            topbar.AddToClassList("debug-ui-topbar");
+            topbar.AddToClassList(UssClasses.debug_ui_topbar);
 
             label = new Label(text);
             label.style.flexGrow = 1;
             topbar.Add(label);
 
             var buttonContainer = new VisualElement();
-            buttonContainer.AddToClassList("debug-ui-topbar-button-container");
+            buttonContainer.AddToClassList(UssClasses.debug_ui_topbar_button_container);
 
             var toggleButton = new Button();
             toggleButton.text = "-";
-            toggleButton.AddToClassList("debug-ui-topbar-button");
+            toggleButton.AddToClassList(UssClasses.debug_ui_topbar_button);
             toggleButton.RegisterCallback<ClickEvent>((e) =>
             {
                 scrollView.style.display = scrollView.style.display == DisplayStyle.None ? DisplayStyle.Flex : DisplayStyle.None;
@@ -68,7 +68,7 @@ namespace DebugUI.UIElements
 
             var closeButton = new Button();
             closeButton.text = "x";
-            closeButton.AddToClassList("debug-ui-topbar-button");
+            closeButton.AddToClassList(UssClasses.debug_ui_topbar_button);
             closeButton.RegisterCallback<ClickEvent>((e) =>
             {
                 style.display = DisplayStyle.None;
