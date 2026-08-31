@@ -470,3 +470,23 @@
 .debug-ui-tab-view > * > * > * > .unity-tab__header-underline {
     display: none;
 }
+
+.debug-ui-submitable-field-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.debug-ui-submitable-field-label {
+    min-width: 120px;
+}
+
+.debug-ui-submitable-field {
+    flex-grow: 1;
+}
+
+.debug-ui-submitable-field-button {
+    min-width: 20px;
+    width: 20px;
+    margin: 0px 0px 0px 5px;
+}

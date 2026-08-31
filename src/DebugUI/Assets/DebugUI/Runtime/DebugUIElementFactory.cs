@@ -550,4 +550,68 @@ namespace DebugUI
             return listView;
         }
     }
+
+    internal sealed class SubmitableIntFieldFactory : IDebugUIElementFactory
+    {
+        public string Label;
+        public Action<int> OnSubmit;
+
+        public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
+        {
+            var container = new VisualElement();
+            container.AddToClassList("debug-ui-submitable-field-container");
+
+            var label = new Label(Label);
+            label.AddToClassList("debug-ui-submitable-field-label");
+            container.Add(label);
+
+            var intField = new IntegerField();
+            intField.AddToClassList("debug-ui-submitable-field");
+            container.Add(intField);
+
+            var submitButton = new Button();
+            submitButton.AddToClassList("debug-ui-submitable-field-button");
+            submitButton.text = ">";
+            container.Add(submitButton);
+
+            submitButton.RegisterCallback<ClickEvent, IntegerField>((e, x) =>
+            {
+                OnSubmit(x.value);
+            }, intField);
+
+            return container;
+        }
+    }
+
+    internal sealed class SubmitableFloatFieldFactory : IDebugUIElementFactory
+    {
+        public string Label;
+        public Action<float> OnSubmit;
+
+        public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
+        {
+            var container = new VisualElement();
+            container.AddToClassList("debug-ui-submitable-field-container");
+
+            var label = new Label(Label);
+            label.AddToClassList("debug-ui-submitable-field-label");
+            container.Add(label);
+
+            var floatField = new FloatField();
+            floatField.AddToClassList("debug-ui-submitable-field");
+            container.Add(floatField);
+
+            var submitButton = new Button();
+            submitButton.AddToClassList("debug-ui-submitable-field-button");
+            submitButton.text = ">";
+            container.Add(submitButton);
+
+            submitButton.RegisterCallback<ClickEvent, FloatField>((e, x) =>
+            {
+                OnSubmit(x.value);
+            }, floatField);
+
+            return container;
+        }
+    }
 }

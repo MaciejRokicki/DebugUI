@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.Scripting.LifecycleManagement;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -17,9 +16,6 @@ namespace DebugUI.Sandbox
             public string Label;
             public int Value;
         }
-
-        [AutoStaticsCleanup]
-        static DemoUIBuilder instance;
 
         [SerializeField] GameObject prefab;
         [SerializeField] Volume volume;
@@ -62,7 +58,18 @@ namespace DebugUI.Sandbox
                 {
                     builder.AddSlider("Time Scale", 0f, 3f, () => Time.timeScale, x => Time.timeScale = x);
                     builder.AddSlider("Gravity Scale", 0f, 3f, () => GravityScale, x => GravityScale = x);
+                    builder.AddSubmitableFloatField("Gravity Scale", x =>
+                    {
+                        GravityScale = x;
+                    });
                     builder.AddButton("Add Circle", () => Instantiate(prefab));
+                    builder.AddSubmitableIntField("Spawn Circles", x =>
+                    {
+                        for (int i = 0; i < x; i++)
+                        {
+                            Instantiate(prefab);
+                        }
+                    });
                     builder.AddButton("Reload Scene", () => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex));
                 });
                 builder.AddTab("Post-processing", builder =>
@@ -107,16 +114,16 @@ namespace DebugUI.Sandbox
                     {
                         visualElement.Q<Button>("Button").UnregisterAllRemovableCallbacks();
                     });
-                });
-                builder.AddButton("Add", () =>
-                {
-                    collection.Add(new TestCollectionItem() { Label = string.Concat("Test_", UnityEngine.Random.Range(0, 999)), Value = UnityEngine.Random.Range(0, 999) });
-                    root.Q<ListView>().Rebuild();
-                });
-                builder.AddButton("Remove", () =>
-                {
-                    collection.RemoveAt(collection.Count - 1);
-                    root.Q<ListView>().Rebuild();
+                    builder.AddButton("Add", () =>
+                    {
+                        collection.Add(new TestCollectionItem() { Label = string.Concat("Test_", UnityEngine.Random.Range(0, 999)), Value = UnityEngine.Random.Range(0, 999) });
+                        root.Q<ListView>().Rebuild();
+                    });
+                    builder.AddButton("Remove", () =>
+                    {
+                        collection.RemoveAt(collection.Count - 1);
+                        root.Q<ListView>().Rebuild();
+                    });
                 });
             });
         }

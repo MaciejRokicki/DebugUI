@@ -561,6 +561,26 @@ namespace DebugUI
             return builder;
         }
 
+        public static IDebugUIBuilder AddSubmitableIntField(this IDebugUIBuilder builder, string label, Action<int> onSubmit)
+        {
+            builder.Factories.Add(new SubmitableIntFieldFactory()
+            {
+                Label = label,
+                OnSubmit = onSubmit
+            });
+            return builder;
+        }
+
+        public static IDebugUIBuilder AddSubmitableFloatField(this IDebugUIBuilder builder, string label, Action<float> onSubmit)
+        {
+            builder.Factories.Add(new SubmitableFloatFieldFactory()
+            {
+                Label = label,
+                OnSubmit = onSubmit
+            });
+            return builder;
+        }
+
         public static void BuildWith(this IDebugUIBuilder builder, VisualElement root)
         {
             root.Add(builder.Build());
