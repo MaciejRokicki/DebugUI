@@ -107,14 +107,11 @@
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
-    border-radius: 5px;
-    padding-top: 0;
-    padding-right: 2px;
-    padding-bottom: 0;
-    padding-left: 5px;
+    padding: 0px;
     min-width: 100px;
     color: rgb(255, 255, 255);
     height: 20px;
+    align-items: center;
 }
 
 .unity-base-text-field__input:disabled {
