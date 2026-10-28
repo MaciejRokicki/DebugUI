@@ -6,15 +6,6 @@
       "source": "local",
       "dependencies": {}
     },
-    "com.singularitygroup.hotreload": {
-      "version": "file:com.singularitygroup.hotreload",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.unity.ugui": "1.0.0",
-        "com.unity.modules.unitywebrequest": "1.0.0"
-      }
-    },
     "com.unity.2d.animation": {
       "version": "17.0.1",
       "depth": 1,
@@ -140,26 +131,14 @@
       "source": "builtin",
       "dependencies": {}
     },
-    "com.unity.collab-proxy": {
-      "version": "2.13.6",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
     "com.unity.collections": {
       "version": "6.7.0",
       "depth": 1,
       "source": "builtin",
-      "dependencies": {
-        "com.unity.burst": "1.8.25",
-        "com.unity.nuget.mono-cecil": "1.11.6",
-        "com.unity.test-framework": "1.4.6",
-        "com.unity.test-framework.performance": "3.2.0"
-      }
+      "dependencies": {}
     },
     "com.unity.ext.nunit": {
-      "version": "2.1.1",
+      "version": "2.1.2",
       "depth": 1,
       "source": "builtin",
       "dependencies": {}
@@ -187,25 +166,21 @@
       "dependencies": {}
     },
     "com.unity.ide.rider": {
-      "version": "3.0.38",
+      "version": "3.1.0",
       "depth": 0,
       "source": "registry",
-      "dependencies": {
-        "com.unity.ext.nunit": "1.0.6"
-      },
+      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.26",
+      "version": "2.0.29",
       "depth": 0,
       "source": "registry",
-      "dependencies": {
-        "com.unity.test-framework": "1.1.33"
-      },
+      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "6.7.0",
+      "version": "7.0.0",
       "depth": 0,
       "source": "builtin",
       "dependencies": {
@@ -223,13 +198,6 @@
       "depth": 0,
       "source": "builtin",
       "dependencies": {}
-    },
-    "com.unity.nuget.mono-cecil": {
-      "version": "1.11.6",
-      "depth": 2,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
     },
     "com.unity.profiling.core": {
       "version": "1.0.3",
@@ -304,15 +272,6 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       }
     },
-    "com.unity.test-framework.performance": {
-      "version": "6.7.0",
-      "depth": 2,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.test-framework": "1.1.33",
-        "com.unity.modules.jsonserialize": "1.0.0"
-      }
-    },
     "com.unity.timeline": {
       "version": "6.7.0",
       "depth": 0,
@@ -325,7 +284,7 @@
       }
     },
     "com.unity.ugui": {
-      "version": "2.7.0",
+      "version": "7.0.0",
       "depth": 0,
       "source": "builtin",
       "dependencies": {
