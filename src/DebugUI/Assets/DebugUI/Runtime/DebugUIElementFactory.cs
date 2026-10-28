@@ -473,7 +473,7 @@ namespace DebugUI
             tab.AddToClassList(UssClasses.debug_ui_tab);
             var builder = new TabBuilder(tab);
             Configure(builder);
-            tab.Add(builder.Build());
+            builder.Build();
 
             return tab;
         }
@@ -521,7 +521,7 @@ namespace DebugUI
             tabView.AddToClassList(UssClasses.debug_ui_tab_view);
             var builder = new TabViewBuilder(tabView);
             Configure(builder);
-            tabView.Add(builder.Build());
+            builder.Build();
 
             return tabView;
         }
