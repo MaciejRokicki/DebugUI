@@ -24,6 +24,10 @@ namespace DebugUI.Sandbox
         ColorAdjustments colorAdjustments;
         Bloom bloom;
 
+        Dictionary<Label, Action<int>> labelEvents;
+
+        event Action<int> testEvent;
+
         float GravityScale
         {
             get
@@ -43,6 +47,15 @@ namespace DebugUI.Sandbox
 
             volume.profile.TryGet(out colorAdjustments);
             volume.profile.TryGet(out bloom);
+
+            labelEvents = new Dictionary<Label, Action<int>>();
+
+            testEvent = delegate { };
+        }
+
+        private void OnDestroy()
+        {
+            testEvent = delegate { };
         }
 
         protected override void Configure(IDebugUIBuilder builder)
@@ -124,6 +137,18 @@ namespace DebugUI.Sandbox
                         collection.RemoveAt(collection.Count - 1);
                         root.Q<ListView>().Rebuild();
                     });
+                    builder.AddLabel("TEST", x =>
+                        {
+                            var handler = labelEvents[x] = y => { x.text = y.ToString(); };
+                            testEvent += handler;
+                        }, x =>
+                        {
+                            if (labelEvents.TryGetValue(x, out var handler))
+                            {
+                                testEvent -= handler;
+                            }
+                        });
+                    builder.AddButton("Invoke test event", () => { testEvent.Invoke(UnityEngine.Random.Range(-9999, 9999)); });
                 });
             });
         }

@@ -25,10 +25,20 @@ namespace DebugUI
     internal sealed class DebugLabelFactory : IDebugUIElementFactory
     {
         public string Text { get; set; }
+        public Action<Label> Register { get; set; }
+        public Action<Label> Unregister { get; set; }
 
         public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
         {
-            return new Label(Text);
+            var label = new Label(Text);
+            Register?.Invoke(label);
+
+            if (Unregister != null)
+            {
+                disposables.Add(new DisposableAction(() => { Unregister(label); }));
+            }
+
+            return label;
         }
     }
 

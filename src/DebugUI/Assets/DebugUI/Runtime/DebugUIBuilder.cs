@@ -2,6 +2,7 @@ using DebugUI.UIElements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace DebugUI
@@ -27,7 +28,9 @@ namespace DebugUI
 
             window.RegisterCallback<DetachFromPanelEvent>(eventData =>
             {
-                foreach (var item in disposables) item.Dispose();
+                foreach (var item in disposables) 
+                    item.Dispose();
+
                 disposables.Clear();
             });
 

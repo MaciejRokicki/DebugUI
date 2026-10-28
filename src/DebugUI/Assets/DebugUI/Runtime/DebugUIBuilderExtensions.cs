@@ -34,6 +34,19 @@ namespace DebugUI
             builder.Factories.Add(new DebugLabelFactory()
             {
                 Text = text,
+                Register = null,
+                Unregister = null
+            });
+            return builder;
+        }
+
+        public static IDebugUIBuilder AddLabel(this IDebugUIBuilder builder, string text, Action<Label> register, Action<Label> unregister)
+        {
+            builder.Factories.Add(new DebugLabelFactory()
+            {
+                Text = text,
+                Register = register,
+                Unregister = unregister
             });
             return builder;
         }
