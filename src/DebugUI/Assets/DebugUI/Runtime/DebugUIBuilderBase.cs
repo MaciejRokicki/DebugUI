@@ -40,6 +40,11 @@ namespace DebugUI
             toggleAction.Disable();
         }
 
+        protected T Q<T>(string name) where T : VisualElement
+        {
+            return root.Q<T>(name);
+        }
+
         protected virtual void OnUIReload(PanelRenderer renderer, VisualElement rootElement, int version)
         {
             root = rootElement;

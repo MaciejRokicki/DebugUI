@@ -9,34 +9,36 @@ namespace DebugUI
 {
     public interface IDebugUIElementFactory
     {
-        VisualElement CreateVisualElement(ICollection<IDisposable> disposables);
+        public VisualElement CreateVisualElement(ICollection<IDisposable> disposables);
     }
 
     internal sealed class DebugSpaceFactory : IDebugUIElementFactory
     {
+        public string Name { get; set; }
         public float Height { get; set; }
 
         public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
         {
-            return new VisualElement() { style = { height = Height } };
+            var space = new VisualElement() { style = { height = Height } };
+
+            if (!string.IsNullOrEmpty(Name))
+                space.name = Name;
+
+            return space;
         }
     }
 
     internal sealed class DebugLabelFactory : IDebugUIElementFactory
     {
+        public string Name { get; set; }
         public string Text { get; set; }
-        public Action<Label> Register { get; set; }
-        public Action<Label> Unregister { get; set; }
 
         public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
         {
             var label = new Label(Text);
-            Register?.Invoke(label);
 
-            if (Unregister != null)
-            {
-                disposables.Add(new DisposableAction(() => { Unregister(label); }));
-            }
+            if (!string.IsNullOrEmpty(Name))
+                label.name = Name;
 
             return label;
         }
@@ -44,20 +46,27 @@ namespace DebugUI
 
     internal sealed class DebugButtonFactory : IDebugUIElementFactory
     {
+        public string Name { get; set; }
         public string Text { get; set; }
         public Action Action { get; set; }
 
         public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
         {
-            return new Button(Action)
+            var button = new Button(Action)
             {
                 text = Text
             };
+
+            if (!string.IsNullOrEmpty(Name))
+                button.name = Name;
+
+            return button;
         }
     }
 
     internal sealed class DebugSliderFactory : IDebugUIElementFactory
     {
+        public string Name { get; set; }
         public string Label { get; set; }
         public string Format { get; set; }
         public float LowValue { get; set; }
@@ -75,7 +84,8 @@ namespace DebugUI
                 highValue = HighValue,
             };
 
-            field.ForceUpdateValue(Getter());
+            if (!string.IsNullOrEmpty(Name))
+                field.name = Name;
 
             if (Setter == null)
             {
@@ -86,12 +96,17 @@ namespace DebugUI
                 field.RegisterValueChangedCallback(x => Setter(x.newValue));
             }
 
-            MinimalRx.EveryValueChanged(this, x => x.Getter())
-                .Subscribe(x =>
-                {
-                    field.value = x;
-                })
-                .AddTo(disposables);
+            if (Getter != null)
+            {
+                field.ForceUpdateValue(Getter());
+
+                MinimalRx.EveryValueChanged(this, x => x.Getter())
+                    .Subscribe(x =>
+                    {
+                        field.value = x;
+                    })
+                    .AddTo(disposables);
+            }
 
             return field;
         }
@@ -99,6 +114,7 @@ namespace DebugUI
 
     internal sealed class DebugSliderIntFactory : IDebugUIElementFactory
     {
+        public string Name { get; set; }
         public string Label { get; set; }
         public string Format { get; set; }
         public int LowValue { get; set; }
@@ -116,7 +132,8 @@ namespace DebugUI
                 highValue = HighValue,
             };
 
-            field.ForceUpdateValue(Getter());
+            if (!string.IsNullOrEmpty(Name))
+                field.name = Name;
 
             if (Setter == null)
             {
@@ -127,12 +144,17 @@ namespace DebugUI
                 field.RegisterValueChangedCallback(x => Setter(x.newValue));
             }
 
-            MinimalRx.EveryValueChanged(this, x => x.Getter())
-                .Subscribe(x =>
-                {
-                    field.value = x;
-                })
-                .AddTo(disposables);
+            if (Getter != null)
+            {
+                field.ForceUpdateValue(Getter());
+
+                MinimalRx.EveryValueChanged(this, x => x.Getter())
+                    .Subscribe(x =>
+                    {
+                        field.value = x;
+                    })
+                    .AddTo(disposables);
+            }
 
             return field;
         }
@@ -140,6 +162,7 @@ namespace DebugUI
 
     internal sealed class DebugProgressBarFactory : IDebugUIElementFactory
     {
+        public string Name { get; set; }
         public string Label { get; set; }
         public string Format { get; set; }
         public float LowValue { get; set; }
@@ -154,6 +177,9 @@ namespace DebugUI
                 highValue = HighValue,
             };
 
+            if (!string.IsNullOrEmpty(Name))
+                field.name = Name;
+
             field.schedule.Execute(() =>
             {
                 var x = Getter();
@@ -161,13 +187,16 @@ namespace DebugUI
                 field.title = Label + " " + string.Format(Format, x);
             });
 
-            MinimalRx.EveryValueChanged(this, x => x.Getter())
-                .Subscribe(x =>
-                {
-                    field.value = x;
-                    field.title = Label + " " + string.Format(Format, x);
-                })
-                .AddTo(disposables);
+            if (Getter != null)
+            {
+                MinimalRx.EveryValueChanged(this, x => x.Getter())
+                    .Subscribe(x =>
+                    {
+                        field.value = x;
+                        field.title = Label + " " + string.Format(Format, x);
+                    })
+                    .AddTo(disposables);
+            }
 
             return field;
         }
@@ -202,7 +231,7 @@ namespace DebugUI
                 return root;
             }
         }
-
+        public string Name { get; set; }
         public string Label { get; set; }
         public Action<IDebugUIBuilder> Configure { get; set; }
 
@@ -212,6 +241,9 @@ namespace DebugUI
             {
                 text = Label
             };
+
+            if (!string.IsNullOrEmpty(Name))
+                foldout.name = Name;
 
             var builder = new Builder();
             Configure(builder);
@@ -226,6 +258,7 @@ namespace DebugUI
     internal sealed class DebugEnumFieldFactory<TEnum> : IDebugUIElementFactory
         where TEnum : Enum
     {
+        public string Name { get; set; }
         public string Label { get; set; }
         public Func<TEnum> Getter { get; set; }
         public Action<TEnum> Setter { get; set; }
@@ -237,6 +270,9 @@ namespace DebugUI
                 label = Label,
             };
 
+            if (!string.IsNullOrEmpty(Name))
+                field.name = Name;
+
             if (Setter == null)
             {
                 field.SetEnabled(false);
@@ -246,12 +282,15 @@ namespace DebugUI
                 field.RegisterValueChangedCallback(x => Setter((TEnum)x.newValue));
             }
 
-            MinimalRx.EveryValueChanged(this, x => x.Getter())
-                .Subscribe(x =>
-                {
-                    field.value = x;
-                })
-                .AddTo(disposables);
+            if (Getter != null)
+            {
+                MinimalRx.EveryValueChanged(this, x => x.Getter())
+                    .Subscribe(x =>
+                    {
+                        field.value = x;
+                    })
+                    .AddTo(disposables);
+            }
 
             return field;
         }
@@ -260,6 +299,7 @@ namespace DebugUI
     internal sealed class DebugFieldFactory<TValue, TField> : IDebugUIElementFactory
         where TField : BaseField<TValue>, new()
     {
+        public string Name { get; set; }
         public string Label { get; set; }
         public Func<TValue> Getter { get; set; }
         public Action<TValue> Setter { get; set; }
@@ -272,6 +312,9 @@ namespace DebugUI
                 value = Getter()
             };
 
+            if (!string.IsNullOrEmpty(Name))
+                field.name = Name;
+
             if (Setter == null)
             {
                 field.SetEnabled(false);
@@ -281,12 +324,15 @@ namespace DebugUI
                 field.RegisterValueChangedCallback(x => Setter(x.newValue));
             }
 
-            MinimalRx.EveryValueChanged(this, x => x.Getter())
-                .Subscribe(x =>
-                {
-                    field.value = x;
-                })
-                .AddTo(disposables);
+            if (Getter != null)
+            {
+                MinimalRx.EveryValueChanged(this, x => x.Getter())
+                    .Subscribe(x =>
+                    {
+                        field.value = x;
+                    })
+                    .AddTo(disposables);
+            }
 
             return field;
         }
@@ -296,6 +342,7 @@ namespace DebugUI
         where TCompositeField : BaseCompositeField<TValue, TField, TFieldValue>, new()
         where TField : TextValueField<TFieldValue>, new()
     {
+        public string Name { get; set; }
         public string Label { get; set; }
         public Func<TValue> Getter { get; set; }
         public Action<TValue> Setter { get; set; }
@@ -308,6 +355,9 @@ namespace DebugUI
                 value = Getter()
             };
 
+            if (!string.IsNullOrEmpty(Name))
+                field.name = Name;
+
             if (Setter == null)
             {
                 field.SetEnabled(false);
@@ -317,18 +367,22 @@ namespace DebugUI
                 field.RegisterValueChangedCallback(x => Setter(x.newValue));
             }
 
-            MinimalRx.EveryValueChanged(this, x => x.Getter())
-                .Subscribe(x =>
-                {
-                    field.value = x;
-                })
-                .AddTo(disposables);
+            if (Getter != null)
+            {
+                MinimalRx.EveryValueChanged(this, x => x.Getter())
+                    .Subscribe(x =>
+                    {
+                        field.value = x;
+                    })
+                    .AddTo(disposables);
+            }
 
             return field;
         }
     }
     internal sealed class DebugStaticImagePreviewFactory : IDebugUIElementFactory
     {
+        public string Name { get; set; }
         public string Label { get; set; }
         public Background Background { get; set; }
 
@@ -340,12 +394,16 @@ namespace DebugUI
                 BackgroundImage = Background
             };
 
+            if (!string.IsNullOrEmpty(Name))
+                field.name = Name;
+
             return field;
         }
     }
 
     internal sealed class DebugTexture2DImagePreviewFactory : IDebugUIElementFactory
     {
+        public string Name { get; set; }
         public string Label { get; set; }
         public Func<Texture2D> Getter { get; set; }
 
@@ -356,6 +414,9 @@ namespace DebugUI
                 Text = Label,
                 BackgroundImage = Getter()
             };
+
+            if (!string.IsNullOrEmpty(Name))
+                field.name = Name;
 
             MinimalRx.EveryValueChanged(this, x => x.Getter())
                 .Subscribe(x =>
@@ -370,6 +431,7 @@ namespace DebugUI
 
     internal sealed class DebugSpriteImagePreviewFactory : IDebugUIElementFactory
     {
+        public string Name { get; set; }
         public string Label { get; set; }
         public Func<Sprite> Getter { get; set; }
 
@@ -380,6 +442,9 @@ namespace DebugUI
                 Text = Label,
                 BackgroundImage = Background.FromSprite(Getter())
             };
+
+            if (!string.IsNullOrEmpty(Name))
+                field.name = Name;
 
             MinimalRx.EveryValueChanged(this, x => x.Getter())
                 .Subscribe(x =>
@@ -394,6 +459,7 @@ namespace DebugUI
 
     internal sealed class DebugRenderTextureImagePreviewFactory : IDebugUIElementFactory
     {
+        public string Name { get; set; }
         public string Label { get; set; }
         public Func<RenderTexture> Getter { get; set; }
 
@@ -404,6 +470,9 @@ namespace DebugUI
                 Text = Label,
                 BackgroundImage = Background.FromRenderTexture(Getter())
             };
+
+            if (!string.IsNullOrEmpty(Name))
+                field.name = Name;
 
             MinimalRx.EveryValueChanged(this, x => x.Getter())
                 .Subscribe(x =>
@@ -418,6 +487,7 @@ namespace DebugUI
 
     internal sealed class DebugVectorImagePreviewFactory : IDebugUIElementFactory
     {
+        public string Name { get; set; }
         public string Label { get; set; }
         public Func<VectorImage> Getter { get; set; }
 
@@ -428,6 +498,9 @@ namespace DebugUI
                 Text = Label,
                 BackgroundImage = Background.FromVectorImage(Getter())
             };
+
+            if (!string.IsNullOrEmpty(Name))
+                field.name = Name;
 
             MinimalRx.EveryValueChanged(this, x => x.Getter())
                 .Subscribe(x =>
@@ -473,13 +546,17 @@ namespace DebugUI
                 return root;
             }
         }
-
+        public string Name { get; set; }
         public string Label { get; set; }
         public Action<IDebugUIBuilder> Configure { get; set; }
 
         public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
         {
             var tab = new Tab(Label);
+
+            if (!string.IsNullOrEmpty(Name))
+                tab.name = Name;
+
             tab.AddToClassList(UssClasses.debug_ui_tab);
             var builder = new TabBuilder(tab);
             Configure(builder);
@@ -523,11 +600,16 @@ namespace DebugUI
             }
         }
 
+        public string Name { get; set; }
         public Action<IDebugUIBuilder> Configure { get; set; }
 
         public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
         {
             var tabView = new TabView();
+
+            if (!string.IsNullOrEmpty(Name))
+                tabView.name = Name;
+
             tabView.AddToClassList(UssClasses.debug_ui_tab_view);
             var builder = new TabViewBuilder(tabView);
             Configure(builder);
@@ -539,18 +621,18 @@ namespace DebugUI
 
     internal sealed class DebugListViewFactory : IDebugUIElementFactory
     {
-        public string ElementName;
-        public float MaxHeight;
-        public IList Collection;
-        public Func<VisualElement> MakeItem;
-        public Action<VisualElement, int> BindItem;
-        public Action<VisualElement, int> UnbindItem;
+        public string Name { get; set; }
+        public float MaxHeight { get; set; }
+        public IList Collection { get; set; }
+        public Func<VisualElement> MakeItem { get; set; }
+        public Action<VisualElement, int> BindItem { get; set; }
+        public Action<VisualElement, int> UnbindItem { get; set; }
 
         public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
         {
             var listView = new ListView(Collection, -1, MakeItem, BindItem);
             listView.unbindItem = UnbindItem;
-            listView.name = ElementName;
+            listView.name = Name;
             listView.virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight;
             var styleLength = MaxHeight == -1.0f ? new StyleLength(StyleKeyword.Auto) : new StyleLength(MaxHeight);
             listView.style.minHeight = styleLength;
@@ -563,12 +645,17 @@ namespace DebugUI
 
     internal sealed class SubmitableIntFieldFactory : IDebugUIElementFactory
     {
-        public string Label;
-        public Action<int> OnSubmit;
+        public string Name { get; set; }
+        public string Label { get; set; }
+        public Action<int> OnSubmit { get; set; }
 
         public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
         {
             var container = new VisualElement();
+
+            if (!string.IsNullOrEmpty(Name))
+                container.name = Name;
+
             container.AddToClassList(UssClasses.debug_ui_submitable_field_container);
 
             var label = new Label(Label);
@@ -595,12 +682,17 @@ namespace DebugUI
 
     internal sealed class SubmitableFloatFieldFactory : IDebugUIElementFactory
     {
-        public string Label;
-        public Action<float> OnSubmit;
+        public string Name { get; set; }
+        public string Label { get; set; }
+        public Action<float> OnSubmit { get; set; }
 
         public VisualElement CreateVisualElement(ICollection<IDisposable> disposables)
         {
             var container = new VisualElement();
+
+            if (!string.IsNullOrEmpty(Name))
+                container.name = Name;
+
             container.AddToClassList(UssClasses.debug_ui_submitable_field_container);
 
             var label = new Label(Label);
