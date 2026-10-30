@@ -73,12 +73,12 @@ namespace DebugUI.Sandbox
                 {
                     builder.AddSlider("Time Scale", 0f, 3f, () => Time.timeScale, x => Time.timeScale = x);
                     builder.AddSlider("Gravity Scale", 0f, 3f, () => GravityScale, x => GravityScale = x);
-                    builder.AddSubmitableFloatField("Gravity Scale", x =>
+                    builder.AddSubmitableFloatField("Gravity Scale", GravityScale, x =>
                     {
                         GravityScale = x;
                     });
                     builder.AddButton("Add Circle", () => Instantiate(prefab));
-                    builder.AddSubmitableIntField("Spawn Circles", x =>
+                    builder.AddSubmitableIntField("Spawn Circles", 1, x =>
                     {
                         for (int i = 0; i < x; i++)
                         {

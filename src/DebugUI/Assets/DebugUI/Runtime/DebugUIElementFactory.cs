@@ -646,6 +646,7 @@ namespace DebugUI
     internal sealed class SubmitableIntFieldFactory : IDebugUIElementFactory
     {
         public string Name { get; set; }
+        public int DefaultValue { get; set; }
         public string Label { get; set; }
         public Action<int> OnSubmit { get; set; }
 
@@ -664,6 +665,7 @@ namespace DebugUI
 
             var intField = new IntegerField();
             intField.AddToClassList(UssClasses.debug_ui_submitable_field);
+            intField.value = DefaultValue;
             container.Add(intField);
 
             var submitButton = new Button();
@@ -683,6 +685,7 @@ namespace DebugUI
     internal sealed class SubmitableFloatFieldFactory : IDebugUIElementFactory
     {
         public string Name { get; set; }
+        public float DefaultValue { get; set; }
         public string Label { get; set; }
         public Action<float> OnSubmit { get; set; }
 
@@ -701,6 +704,7 @@ namespace DebugUI
 
             var floatField = new FloatField();
             floatField.AddToClassList(UssClasses.debug_ui_submitable_field);
+            floatField.value = DefaultValue;
             container.Add(floatField);
 
             var submitButton = new Button();
